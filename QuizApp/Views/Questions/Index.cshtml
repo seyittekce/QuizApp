@@ -1,0 +1,118 @@
+﻿@using QuizApp.Models
+@model IEnumerable<QuizApp.Models.Questions>
+@{
+    ViewBag.Title = "Index";
+    var ssTypes = "";
+}
+<div class="col-lg-12 layout-spacing">
+    <center>
+        <a href="~/Questions/Create" class="btn btn-success">Soru Oluştur</a>
+    </center>
+</div>
+@foreach (var item in Model)
+{
+    if (item.Type == Questions.QuestionsTypes.Multiple)
+    {
+        ssTypes = "Çoktan Seçmeli";
+    }
+    else if (item.Type == Questions.QuestionsTypes.Truefalse)
+    {
+        ssTypes = "Doğru Yanlış";
+    }
+    else if (item.Type == Questions.QuestionsTypes.Shrots)
+    {
+        ssTypes = "Kısa Cevap";
+    }
+    else if (item.Type == Questions.QuestionsTypes.File)
+    {
+        ssTypes = "Dosya";
+    }
+    else if (item.Type == Questions.QuestionsTypes.Paragraph)
+    {
+        ssTypes = "Paragraf";
+    }
+    <div id="card_2" class="col-lg-4 layout-top-spacing layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <button class="btn btn-warning float-right" onclick="Delete(@item.QuestionID)">
+                            <img src="~/trash.svg"/>
+                        </button>
+                        <h4 class="text-center">@ssTypes</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area" style="height: 350px; max-height: 1500px;">
+                <div class="card component-card_2">
+                    <div class="card-body">
+                        <h5 class="card-title ">@item.Question</h5>
+                        @if (item.Type == Questions.QuestionsTypes.Multiple)
+                        {
+                            var cevaplar = item.Answers.Split('|').ToArray();
+                            if (cevaplar != null)
+                            {
+                                var a = 'A';
+                                foreach (var cevap in cevaplar)
+                                {
+                                    <p class="card-text">@a) @cevap </p>
+                                    a++;
+                                }
+                            }
+                        }
+                        else if (item.Type == Questions.QuestionsTypes.Truefalse)
+                        {
+                            <p class="card-text">Cevap: @item.Answers</p>
+                        }
+                        else if (item.Type == Questions.QuestionsTypes.Shrots)
+                        {
+                            var cevaplar = item.Answers.Split(',').ToArray();
+                            if (cevaplar != null)
+                            {
+                                var a = 1;
+                                foreach (var cevap in cevaplar)
+                                {
+                                    <p class="card-text">@a) @cevap </p>
+                                    a++;
+                                }
+                            }
+                        }
+                        <hr/>
+                        <p>@item.Explanation</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.css" id="theme-styles"/>
+    <script>
+        function Delete(ID) {
+            Swal.fire({
+                title: 'Silmek İstediğinize Emin Misiniz ?',
+                text: "Bu işlemi geri alamazsınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, Sil'
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire(
+                        'Silindi!',
+                        'Kullanıcı Silindi',
+                        'success',
+                        window.location.href = "../Questions/Delete/" + ID
+                    );
+                }
+            });
+        }
+    </script>
+}

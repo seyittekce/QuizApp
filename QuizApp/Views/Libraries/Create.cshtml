@@ -1,0 +1,101 @@
+﻿@using QuizApp.Models
+@model QuizApp.Models.Library
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="widget-content widget-content-area br-6">
+
+        @using (Html.BeginForm())
+        {
+            var db = new DBContext();
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Kütüphane Oluştur</h4>
+                <hr/>
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new {@class = "control-label col-md-2"})
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <center>
+                    <div class="form-group  ">
+                        @Html.LabelFor(model => model.Questions, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.Question, new SelectList(db.Question.ToArray(), "QuestionID", "Question"), new {@class = "form-control", id = "kulls"})
+                            @Html.ValidationMessageFor(model => model.Questions, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                </center>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Comment, new {@class = "control-label col-md-2"})
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Comment, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Oluştur" class="btn btn-success"/>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <link href="~/Content/multi-select.css" rel="stylesheet"/>
+    <script src="~/Content/jquery.multi-select.js"></script>
+    <script src="~/Scripts/Searchq.js"></script>
+    <script type="text/javascript">
+        // run pre selected options
+        $('#kulls').multiSelect({
+            selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Kullanıcı ara'>",
+            selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Seçilmiş olanı ara'>",
+            afterInit: function(ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+            },
+            afterSelect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+    </script>
+}

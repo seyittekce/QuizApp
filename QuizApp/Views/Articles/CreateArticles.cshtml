@@ -1,0 +1,89 @@
+﻿<script>
+    function Gonder() {
+        var justHtml = quill.root.innerHTML;
+        $('.context').innerHTML = justHtml;
+    };
+</script>
+@{
+    ViewBag.Title = "CreateArticles";
+}
+<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.snow.css"/>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+    body > #standalone-container {
+        margin: 50px auto;
+        max-width: 720px;
+    }
+
+    #editor {
+        height: 1000px;
+        max-height: 1500px;
+    }
+</style>
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="widget-content widget-content-area br-6">
+        <div class="form-group ">
+            <div class="row ">
+                <div class="col-md-11">
+                    <label class="control-label col-md-5" for="Baslik">Başlık </label>
+                    <input type="text" id="name" name="Name" class="form-control"/>
+                </div>
+                <input type="submit" id="Publish_btn" class="btn btn-success col-md-1" onclick="Gonder()" name="Articles" value="Yayınla"/>
+            </div>
+        </div>
+        <input type="hidden" id="context" name="context"/>
+        <div class="editor" id="editor"></div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block'],
+            [{ 'header': 1 }, { 'header': 2 }], // custom button values
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub' }, { 'script': 'super' }], // superscript/subscript
+            [{ 'indent': '-1' }, { 'indent': '+1' }], // outdent/indent
+            [{ 'direction': 'rtl' }], // text direction
+            [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['link', 'image', 'video', 'formula'], // add's image support
+            [{ 'color': [] }, { 'background': [] }], // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean'] // remove formatting button
+        ];
+        var quill = new Quill('#editor',
+            {
+                modules: {
+                    syntax: true,
+                    toolbar: toolbarOptions
+                },
+                placeholder: 'Yazı ',
+                theme: 'snow'
+            });
+
+
+    </script>
+    <script type="text/javascript">
+        $('#Publish_btn').click(function() {
+            var Articles = {
+                Yazilar: quill.root.innerHTML,
+                Baslik: $('#name').val(),
+            };
+            $.ajax({
+                url: '/Articles/CreateArticle',
+                type: 'POST',
+                data: JSON.stringify(Articles),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8'
+            });
+            return false;
+        });
+    </script>
+
+}

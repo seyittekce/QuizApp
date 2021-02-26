@@ -1,0 +1,28 @@
+﻿@model IEnumerable<QuizApp.Models.VideoAndArticle>
+@{
+    ViewBag.Title = "Videolar";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+<div class="row layout-top-spacing layout-spacing" style="padding-top: 4%">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5" style="height: 315px; width: 560px;">
+            <div class="card">
+                <center>
+                    <div class="card-img-top">@Html.Raw(item.Link)</div>
+                </center>
+                <div class="card-body">
+                    <hr/>
+                    <h4 class="card-title text-center">@item.Baslik</h4>
+
+                    <p class="card-text">
+                        <small class="text-muted">@item.CratedDate.ToShortDateString()</small>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

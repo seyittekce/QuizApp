@@ -1,0 +1,50 @@
+﻿@model IEnumerable<QuizApp.Models.Addons.ListingExam>
+@{
+    ViewBag.Title = "Sınav Listesi";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+<div class="row layout-top-spacing layout-spacing" style="padding-top: 4%">
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-lg-1"></div>
+            <div id="card_2" class="col-lg-4 layout-spacing layout-top-spacing ">
+                <div class="card bg-dark ">
+                    <div class="card-header font-weight-bolder text-center   ">
+                        <h4 class="text-white">
+                            @item.LibraryID.Name
+                        </h4>
+                        <p class="float-right text-muted text-white"></p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-white text-center">@item.Comment </h5>
+                        <p class="card-text text-muted text-white text-center">@item.QuestionCount soru </p>
+                        <center>
+                            <a href="~/Students/Exam/0/@item.ClassID.Uniqe/@item.LibraryID.Uniqe" class="btn btn-warning">Sınava Başla</a>
+                        </center>
+                    </div>
+                    <div class="card-footer text-white text-center bg-dark">
+                        <p class="text-white">
+                            @item.KalanGun Gün Kaldı
+                        </p>
+                        <p class="text-white text-muted">@item.StartDate - @item.EndDate </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        }
+    }
+    else
+    {
+        <div id="card_2" class="col-lg-4 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <p class="card-text"> Sınavınız Yok</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

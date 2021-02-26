@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "ArticlesShow";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+@model QuizApp.Models.VideoAndArticle
+@{
+    ViewBag.Title = "ReadArticles";
+    Layout = "~/Views/Shared/StudentLayout.cshtml";
+}
+<div class="row layout-top-spacing layout-spacing" style="padding-top: 4%">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title text-center">@Model.Baslik</h1>
+                <hr/>
+                @Html.Raw(Model.Yazilar)
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-1"></div>
+</div>

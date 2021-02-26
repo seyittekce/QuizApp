@@ -1,0 +1,77 @@
+﻿@using QuizApp.Models
+@model IEnumerable<QuizApp.Models.Class>
+@{
+    ViewBag.Title = "Sınıflar";
+}
+<div class="col-lg-12 layout-spacing">
+    <center>
+        <a href="~/Class/CreateClass" class="btn btn-success">Soru Oluştur</a>
+    </center>
+</div>
+@foreach (var item in Model)
+{
+    <div id="card_2" class="col-lg-4 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <a href="~/Class/Delete/@item.ClassID" class=" btn btn-warning float-right">
+                            <img src="~/trash.svg"/>
+                        </a>
+                        <a href="~/Class/Details/@item.ClassID" class=" btn btn-info  float-right">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </a>
+                        <h4>@item.Name</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content widget-content-area">
+                <div class="card component-card_2">
+                    <div class="card-body">
+                        <div class="col-6 float-right">
+                            <h5 class="card-title ">Soru Kütüphaneleri</h5>
+                            @{
+                                var db = new DBContext();
+                                var kutup = item.QuizLib.Split('|').ToArray();
+                                if (kutup != null)
+                                {
+                                    foreach (var kut in kutup)
+                                    {
+                                        if (!string.IsNullOrEmpty(kut))
+                                        {
+                                            var ID = Convert.ToInt32(kut);
+                                            var Find = db.QuizLibrary.Find(ID);
+                                            <p class="card-text">@Find.Name</p>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="col-6 float-left">
+                            <h5 class="card-title ">Öğrenciler</h5>
+                            @{
+                                var student = item.Students.Split('|').ToArray();
+                                if (kutup != null)
+                                {
+                                    foreach (var stu in student)
+                                    {
+                                        if (stu != null)
+                                        {
+                                            var ID = Convert.ToInt32(stu);
+                                            var Find = db.Students.Find(ID);
+                                            <p class="card-text">@Find.FirsName @Find.LastName</p>
+                                        }
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="code-section-container">
+                </div>
+            </div>
+        </div>
+    </div>
+}

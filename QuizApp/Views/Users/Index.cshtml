@@ -1,0 +1,151 @@
+﻿@model IEnumerable<QuizApp.Models.Users>
+@{
+    ViewBag.Title = "Kullanıcı Tablosu";
+}
+<link rel="stylesheet" type="text/css" href="~/plugins/table/datatable/datatables.css">
+<link rel="stylesheet" type="text/css" href="~/plugins/table/datatable/custom_dt_html5.css">
+<link rel="stylesheet" type="text/css" href="~/plugins/table/datatable/dt-global_style.css">
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="widget-content widget-content-area br-12">
+        <div class="table-responsive mb-4 mt-4">
+            <div id="zero-config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                <div class="col-sm-12">
+                    <table id="datatable" class="table table-hover non-hover dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="html5-extension_info">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.LastName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NickName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Email)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.LastName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NickName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm" onclick="Show(@item.ID)" data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>
+                                        <button class="btn btn-danger btn-sm" onclick="DeleteWarning(@item.ID)"><i class="fa fa-trash fa-lg " aria-hidden="true"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Admin Bilgileri</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<a href="~/Users/Edit/@Model.ID" class="btn btn-outline-secondary float-right">Düzenle</a>
+                    <a href="~/Users/Delete/@Model.ID" class="btn btn-outline-danger float-right" style="margin-right:15px">Sil</a>*@
+                <dl class="dl-horizontal">
+                    <dt>
+                        İsim
+                    </dt>
+                    <dd id="Name">
+                    </dd>
+                    <dt>
+                        Soyisim
+                    </dt>
+                    <dd id="LastName">
+                    </dd>
+                    <dt>
+                        Kullanıcı Adı
+                    </dt>
+                    <dd id="NickName">
+                    </dd>
+                    <dt>
+                        E-Mail
+                    </dt>
+                    <dd id="Email">
+                    </dd>
+                    <dt>
+                        Telefon Numarası
+                    </dt>
+                    <dd id="PhoneNumber">
+                    </dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button name="ID" id="ID" value="" class="btn btn-secondary  float-left" onclick="Edit()">Düzenle</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="CreateUsers" tabindex="-1" role="dialog" aria-labelledby="CreateUsers" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Kullanıcı </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadin">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editcon" tabindex="-1" role="dialog" aria-labelledby="editcon" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Kullanıcı </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="editloadin">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/plugins/table/datatable/datatables.js"></script>
+<script src="~/plugins/table/datatable/button-ext/dataTables.buttons.min.js"></script>
+<script src="~/plugins/table/datatable/button-ext/jszip.min.js"></script>
+<script src="~/plugins/table/datatable/button-ext/buttons.html5.min.js"></script>
+<script src="~/plugins/table/datatable/button-ext/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.css" id="theme-styles" />
+<script src="~/Scripts/userIndex.js"></script>

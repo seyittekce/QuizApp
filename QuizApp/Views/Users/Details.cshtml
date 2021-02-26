@@ -1,0 +1,73 @@
+﻿@model QuizApp.Models.Users
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="widget-content widget-content-area br-6">
+        @Html.ActionLink("<- Listeye Geri Dön", "Index")
+        <a href="~/Users/Edit/@Model.ID" class="btn btn-outline-secondary float-right">Düzenle</a>
+        <a href="~/Users/Delete/@Model.ID" class="btn btn-outline-danger float-right" style="margin-right: 15px">Sil</a>
+        <h4>@Model.Name Detay</h4>
+
+
+        <hr/>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NickName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.NickName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CratedDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CratedDate)
+            </dd>
+
+
+        </dl>
+
+        <p>
+
+
+            @Html.ActionLink("<- Listeye Geri Dön", "Index")
+        </p>
+    </div>
+</div>

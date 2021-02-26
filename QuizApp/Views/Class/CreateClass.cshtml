@@ -1,0 +1,175 @@
+﻿@using QuizApp.Models
+@model QuizApp.Models.Class
+
+@{
+    ViewBag.Title = "CreateClass";
+}
+
+
+<div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+    <div class="widget-content widget-content-area br-6">
+
+        <center>
+            @using (Html.BeginForm())
+            {
+                var db = new DBContext();
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Sınıf Oluştur</h4>
+                    <hr/>
+                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Students, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.Student1, new SelectList(db.Students.ToArray(), "StudentID", "FirsName"), new {@class = "form-control", id = "Students"})
+
+                            @Html.ValidationMessageFor(model => model.Students, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.QuizLib, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.ListBoxFor(model => model.Library1, new SelectList(db.QuizLibrary.ToArray(), "LibraryID", "Name"), new {@class = "form-control", id = "Library"})
+                            @Html.ValidationMessageFor(model => model.QuizLib, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label text-right col-lg-3 col-sm-12"></label>
+                        <div class="col-lg-5 col-md-9 col-sm-12">
+                            <div class="input-daterange input-group" id="kt_datepicker_5">
+                                @Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control", id = "StartDate", placehoder = "Başlangıç Tarihi"}})
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-ellipsis-h">-</i>
+                                    </span>
+                                </div>
+                                @Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "EndDate"}})
+                            </div>
+                            <span class="form-text text-center text-muted">Tarih Aralığı Seçin</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Oluştur" class="btn btn-success"/>
+                        </div>
+                    </div>
+                </div>
+            }
+        </center>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/plugins/flatpickr/flatpickr.js"></script>
+    <link href="~/plugins/flatpickr/flatpickr.css" rel="stylesheet"/>
+    <link href="~/Content/multi-select.css" rel="stylesheet"/>
+    <script src="~/Content/jquery.multi-select.js"></script>
+    <script src="~/Scripts/Searchq.js"></script>
+    <script type="text/javascript">
+        // run pre selected options
+        $('#Students').multiSelect({
+            selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Öğrenci Ara'>",
+            selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Seçilmiş Öğrenci ara'>",
+            afterInit: function(ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+            },
+            afterSelect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        // run pre selected options
+        $('#Library').multiSelect({
+            selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Kütüphane Ara'>",
+            selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='Seçilmiş Kütüphane ara'>",
+            afterInit: function(ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown',
+                        function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+            },
+            afterSelect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+    </script>
+
+    <script>
+
+        var f2 = flatpickr(document.getElementById('StartDate'),
+            {
+                enableTime: true,
+                dateFormat: "d-m-Y H:i",
+                minDate: "today",
+
+            });
+        var f1 = flatpickr(document.getElementById('EndDate'),
+            {
+                enableTime: true,
+                dateFormat: "d-m-Y H:i",
+                minDate: "today",
+            });
+    </script>
+
+
+}
